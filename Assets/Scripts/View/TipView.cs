@@ -13,6 +13,8 @@ namespace View
         
         public override void OnOpen( object data )
         {
+            Debug.Log( "说明界面" );
+            
             if( data is string )
             {
                 // 内容
@@ -24,7 +26,7 @@ namespace View
                 ui.content.selectedIndex = (int)data;
             }
             
-            ui.onClick.Set( () =>
+            ui.skip_btn.onClick.Set( () =>
             {
                 if( closeEnable )
                 {

@@ -10,6 +10,8 @@ namespace View
         
         public override void OnOpen( object data )
         {
+            Debug.Log( $"选择角色界面" );
+            
             ui.role_1.select_btn.onClick.Set( () =>
             {
                 Debug.Log( $"你再选选？" );

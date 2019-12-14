@@ -13,7 +13,14 @@ namespace View
 
         public override void OnOpen( object data )
         {
-            Debug.Log( "战斗场景" );
+            if( ContextHelper.walk )
+            {
+                Debug.Log( "遛狗场景" );
+            }
+            else
+            {
+                Debug.Log( "战斗场景" );
+            }
         }
 
         public void Update()
@@ -22,16 +29,10 @@ namespace View
             if( totalTime > 3 )
             {
                 closeEnable = true;
-                // 结算
-                UIHelper.OpenView<ResultView>( typeof(UI_result), 0 );
+                // 场景结算(0:战斗 1:探险)
+                UIHelper.OpenView<ResultView>( typeof(UI_result), ContextHelper.walk ? 1 :0 );
                 Close();
             }
-        }
-
-        private void EndTheDay()
-        {
-            UIHelper.OpenView<ResultView>( typeof(UI_result), 1 );
-            Close();
         }
     }
 }

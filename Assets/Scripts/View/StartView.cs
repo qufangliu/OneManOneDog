@@ -10,10 +10,11 @@ namespace View
         private UI_start ui => (UI_start)uiComponent;
         public override void OnOpen( object data )
         {
+            Debug.Log( $"登录游戏界面" );
+            
             ui.start_btn.onClick.Set( () =>
             {
-                UIHelper.OpenView<TipView>( typeof(UI_tip), "第一天..." );
-                SceneManager.LoadSceneAsync("Fight");
+                UIHelper.OpenView<SelectRoleView>( typeof(UI_role) );
                 Close();
             } );
         }

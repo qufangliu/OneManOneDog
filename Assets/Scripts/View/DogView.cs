@@ -10,6 +10,10 @@ namespace View
 
         public override void OnOpen( object data )
         {
+            Debug.Log( "在家撸狗界面" );
+            // 设置到遛狗场景
+            ContextHelper.walk = true;
+            
             ui.act_1_btn.onClick.Set( () =>
             {
                 Debug.Log( $"抱狗" );

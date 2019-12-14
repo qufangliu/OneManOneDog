@@ -1,5 +1,6 @@
 using UI;
 using ui.Main;
+using UnityEngine;
 
 namespace View
 {
@@ -9,6 +10,8 @@ namespace View
 
         public override void OnOpen( object data )
         {
+            Debug.Log( $"回家路上路过商店" );
+            
             ui.jump_btn.onClick.Set( () =>
             {
                 UIHelper.OpenView<DogView>( typeof(UI_dog) );

@@ -14,6 +14,7 @@ namespace View
 
             if( ui.state.selectedIndex == 0 )
             {
+                Debug.Log( "战斗结算" );
                 // 战斗结算
                 ui.onClick.Set( () =>
                 {
@@ -23,6 +24,7 @@ namespace View
             }
             else if( ui.state.selectedIndex == 1 )
             {
+                Debug.Log( "今日结算" );
                 // 日结算
                 ui.onClick.Set( () =>
                 {

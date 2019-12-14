@@ -10,9 +10,11 @@ namespace View
 
         public override void OnOpen( object data )
         {
+            Debug.Log( $"设置名字界面" );
+            
             ui.confirm_btn.onClick.Set( () =>
             {
-                if( string.IsNullOrEmpty( ui.name_txt.text ) )
+                if( !string.IsNullOrEmpty( ui.name_txt.text ) )
                 {
                     ContextHelper.name = ui.name_txt.text;
                     UIHelper.OpenView<TipView>( typeof(UI_tip), 0 );

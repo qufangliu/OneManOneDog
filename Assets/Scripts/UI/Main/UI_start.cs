@@ -28,7 +28,7 @@ namespace ui.Main
 
 			bg = (GComponent)this.GetChildAt(0);
 			title_txt = (GTextField)this.GetChildAt(1);
-			start_btn = (GButton)this.GetChildAt(3);
+			start_btn = (GButton)this.GetChildAt(2);
 		}
 	}
 }

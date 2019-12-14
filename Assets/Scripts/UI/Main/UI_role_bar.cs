@@ -7,9 +7,9 @@ namespace ui.Main
 {
 	public partial class UI_role_bar : GComponent
 	{
+		public Controller state;
 		public GLoader man_loader;
 		public GLoader dog_loader;
-		public GTextField feature_txt;
 		public GButton select_btn;
 
 		public const string URL = "ui://e4ybow8yjk0ig";
@@ -27,10 +27,10 @@ namespace ui.Main
 		{
 			base.ConstructFromXML(xml);
 
+			state = this.GetControllerAt(0);
 			man_loader = (GLoader)this.GetChildAt(0);
 			dog_loader = (GLoader)this.GetChildAt(1);
-			feature_txt = (GTextField)this.GetChildAt(2);
-			select_btn = (GButton)this.GetChildAt(3);
+			select_btn = (GButton)this.GetChildAt(2);
 		}
 	}
 }

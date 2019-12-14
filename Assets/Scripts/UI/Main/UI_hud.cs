@@ -9,8 +9,8 @@ namespace ui.Main
 	{
 		public Controller state;
 		public UI_hud_tip hud_tip;
-		public GLoader man_loader;
 		public GProgressBar health_bar;
+		public GLoader man_loader;
 		public GLoader dog_loader;
 		public GProgressBar dog_health_bar;
 
@@ -31,8 +31,8 @@ namespace ui.Main
 
 			state = this.GetControllerAt(0);
 			hud_tip = (UI_hud_tip)this.GetChildAt(0);
-			man_loader = (GLoader)this.GetChildAt(1);
-			health_bar = (GProgressBar)this.GetChildAt(2);
+			health_bar = (GProgressBar)this.GetChildAt(1);
+			man_loader = (GLoader)this.GetChildAt(2);
 			dog_loader = (GLoader)this.GetChildAt(3);
 			dog_health_bar = (GProgressBar)this.GetChildAt(4);
 		}

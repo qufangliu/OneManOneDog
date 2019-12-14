@@ -1,7 +1,6 @@
 using UI;
 using ui.Main;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace View
 {

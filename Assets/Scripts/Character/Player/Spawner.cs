@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
@@ -15,9 +14,9 @@ public class Spawner : MonoBehaviour
     private int enemiesRemainingAlive;
 
     private int enemiesRemainingToSpawn;
-    public Enemy enemy;
-    private bool isCamping;
-
+    public Enemy[] enemys;
+    public Transform[] spawnPoints;
+    
     private bool isDisabled;
 
     private float nextCampCheckTime;
@@ -25,8 +24,6 @@ public class Spawner : MonoBehaviour
 
     private LivingEntity playerEntity;
     private Transform playerT;
-
-    public float spawnRadius = 3;
 
     //Spawn tile material
     public float timeBetweenCampingChecks = 2;
@@ -53,7 +50,6 @@ public class Spawner : MonoBehaviour
             if (Time.time > nextCampCheckTime)
             {
                 nextCampCheckTime = timeBetweenCampingChecks + Time.time;
-                isCamping = Vector3.Distance(playerT.position, campPositionOld) < campThresholdDistance;
                 campPositionOld = playerT.position;
             }
 
@@ -61,14 +57,14 @@ public class Spawner : MonoBehaviour
             {
                 enemiesRemainingToSpawn--;
                 nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
-                StartCoroutine("SpawnEnemy");
+                StartCoroutine(nameof(SpawnEnemy));
             }
         }
 
         if (devMode)
             if (Input.GetKeyDown(KeyCode.N))
             {
-                StopCoroutine("SpawnEnemy");
+                StopCoroutine(nameof(SpawnEnemy));
                 foreach (var enemy in FindObjectsOfType<Enemy>()) Destroy(enemy.gameObject);
                 NextWave();
             }
@@ -78,17 +74,16 @@ public class Spawner : MonoBehaviour
     {
         float spawnDelay = 1;
         float spawnTimer = 0;
-        float angle = Random.Range(0, 360);
         while (spawnTimer < spawnDelay)
         {
             spawnTimer += Time.deltaTime;
             yield return null;
         }
 
-        var spawnEnemy = Instantiate(enemy,transform.position, Quaternion.identity,transform);
+        var spawnEnemy = Instantiate(enemys[Random.Range(0,enemys.Length)],spawnPoints[Random.Range(0,spawnPoints.Length)].position, Quaternion.identity,transform);
         spawnEnemy.OnDeath += OnEnemyDeath;
-        spawnEnemy.SetCharacteristics(currentWave.moveSpeed, currentWave.enemyDamage, currentWave.enemyHealth,
-            currentWave.skinColour);
+        // spawnEnemy.SetCharacteristics(currentWave.moveSpeed, currentWave.enemyDamage, currentWave.enemyHealth,
+        //     currentWave.skinColour);
     }
 
     private void ResetPlayerPosition()
@@ -113,14 +108,14 @@ public class Spawner : MonoBehaviour
 
     private void NextWave()
     {
-        if (currentWaveNumber > 0) AudioManager.instance.PlaySound2D("Level Completed");
+        // if (currentWaveNumber > 0) AudioManager.instance.PlaySound2D("Level Completed");
         currentWaveNumber++;
         if (currentWaveNumber - 1 < waves.Length)
         {
             currentWave = waves[currentWaveNumber - 1];
             enemiesRemainingToSpawn = currentWave.enemyCount;
             enemiesRemainingAlive = enemiesRemainingToSpawn;
-            if (OnNewWave != null) OnNewWave(currentWaveNumber);
+            OnNewWave?.Invoke(currentWaveNumber);
             ResetPlayerPosition();
         }
     }
@@ -129,12 +124,7 @@ public class Spawner : MonoBehaviour
     public class Wave
     {
         public int enemyCount;
-        public float enemyHealth;
-        [FormerlySerializedAs("hitsToKillPlayer")] public int enemyDamage;
         public bool infinite;
-
-        public float moveSpeed;
-        public Color skinColour;
         public float timeBetweenSpawns;
     }
 }

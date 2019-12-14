@@ -3,6 +3,9 @@
  */
 public static class ContextHelper
 {
+    public static int playerMood = 100;
+    public static int gold;
+    public static int dogMood;
     public static string name;
 
     /// <summary>

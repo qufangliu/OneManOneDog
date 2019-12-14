@@ -27,24 +27,24 @@ public class Gun : MonoBehaviour {
     public Transform shellEjection;
     public AudioClip shootAudio;
     public AudioClip reloadAudio;
-    MuzzleFlash muzzleFlash;
-    float nextShotTime;
+    MuzzleFlash _muzzleFlash;
+    float _nextShotTime;
 
-    bool triggerReleasedSinceLastShot;
-    int shotRemainingInBurst;
-    int projectilesRemainingInMag;
-    bool isReloading;
+    bool _triggerReleasedSinceLastShot;
+    int _shotRemainingInBurst;
+    int _projectilesRemainingInMag;
+    bool _isReloading;
 
-    Vector3 recoilSmoothDampVelocity;
-    float recoilRotSmoothDampVelocity;
-    float recoilAngle;
-    Text bulletNumber;
+    Vector3 _recoilSmoothDampVelocity;
+    float _recoilRotSmoothDampVelocity;
+    float _recoilAngle;
+    Text _bulletNumber;
 
     private void Start()
     {
         // muzzleFlash = GetComponent<MuzzleFlash>();
-        shotRemainingInBurst = burstCount;
-        projectilesRemainingInMag = projectilesPerMag;
+        _shotRemainingInBurst = burstCount;
+        _projectilesRemainingInMag = projectilesPerMag;
         // bulletNumber = GameObject.FindGameObjectsWithTag("UI_Text")[0].GetComponent<Text>();
         // bulletNumber.text = "Bullet balance: " + projectilesPerMag;
     }
@@ -52,14 +52,14 @@ public class Gun : MonoBehaviour {
     private void LateUpdate()
     {
         //animate recoil
-        if (!isReloading)
+        if (!_isReloading)
         {
-            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, Vector3.zero, ref recoilSmoothDampVelocity, recoilMoveSettleTime);
-            recoilAngle = Mathf.SmoothDamp(recoilAngle, 0, ref recoilRotSmoothDampVelocity, recoilRotationSettleTime);
-            transform.localEulerAngles = Vector3.left * recoilAngle;
+            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, Vector3.zero, ref _recoilSmoothDampVelocity, recoilMoveSettleTime);
+            _recoilAngle = Mathf.SmoothDamp(_recoilAngle, 0, ref _recoilRotSmoothDampVelocity, recoilRotationSettleTime);
+            transform.localEulerAngles = Vector3.left * _recoilAngle;
         }
        
-        if(!isReloading && projectilesRemainingInMag == 0)
+        if(!_isReloading && _projectilesRemainingInMag == 0)
         {
             Reload();
         }
@@ -67,19 +67,19 @@ public class Gun : MonoBehaviour {
 
     void Shoot()
     {
-        if (!isReloading && Time.time > nextShotTime&& projectilesRemainingInMag > 0)
+        if (!_isReloading && Time.time > _nextShotTime&& _projectilesRemainingInMag > 0)
         {
             if(fireMode == FireMode.Burst)
             {
-                if(shotRemainingInBurst == 0)
+                if(_shotRemainingInBurst == 0)
                 {
                     return;
                 }
-                shotRemainingInBurst--;
+                _shotRemainingInBurst--;
             }
             else if(fireMode == FireMode.Singer)
             {
-                if (!triggerReleasedSinceLastShot)
+                if (!_triggerReleasedSinceLastShot)
                 {
                     return;
                 }
@@ -87,15 +87,16 @@ public class Gun : MonoBehaviour {
 
             for (int i = 0; i <projectileSpawn.Length; i++)
             {
-                if (projectilesRemainingInMag == 0)
+                if (_projectilesRemainingInMag == 0)
                 {
                     break;
                 }
-                projectilesRemainingInMag--;
+                _projectilesRemainingInMag--;
                 
-                nextShotTime = Time.time + msBetweenShots / 1000;
+                _nextShotTime = Time.time + msBetweenShots / 1000;
                 Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
                 newProjectile.setSpeed(muzzleVelocity);
+                ContextHelper.playerMood -= newProjectile.needMood;
             }
 
             // bulletNumber.text = "Bullet balance: " + projectilesRemainingInMag;
@@ -103,8 +104,8 @@ public class Gun : MonoBehaviour {
             // muzzleFlash.Activate();
 
             transform.localPosition -= Vector3.forward * Random.Range(kickMinMax.x,kickMinMax.y);
-            recoilAngle += Random.Range(recoilAngleMinMax.x,recoilAngleMinMax.y);
-            recoilAngle = Mathf.Clamp(recoilAngle, 0f, 30f);
+            _recoilAngle += Random.Range(recoilAngleMinMax.x,recoilAngleMinMax.y);
+            _recoilAngle = Mathf.Clamp(_recoilAngle, 0f, 30f);
 
             // AudioManager.instance.PlaySound(shootAudio,transform.position);
         }
@@ -112,7 +113,7 @@ public class Gun : MonoBehaviour {
 
     public void Reload()
     {
-        if(!isReloading && projectilesRemainingInMag != projectilesPerMag)
+        if(!_isReloading && _projectilesRemainingInMag != projectilesPerMag)
         {
             StartCoroutine(AnimateReload());
             // AudioManager.instance.PlaySound(shootAudio, transform.position);
@@ -121,7 +122,7 @@ public class Gun : MonoBehaviour {
 
     IEnumerator AnimateReload()
     {
-        isReloading = true;
+        _isReloading = true;
         yield return new WaitForSeconds(.2f);
 
         float reloadSpeed = 1f / reloadTime;
@@ -137,14 +138,14 @@ public class Gun : MonoBehaviour {
 
             yield return null;
         }
-        isReloading = false;
-        projectilesRemainingInMag = projectilesPerMag;
+        _isReloading = false;
+        _projectilesRemainingInMag = projectilesPerMag;
         // bulletNumber.text = "Bullet balance: " + projectilesPerMag;
     }
 
     public void Aim(Vector3 aimPoint)
     {
-        if (!isReloading)
+        if (!_isReloading)
         {
             transform.LookAt(aimPoint);
         }
@@ -153,12 +154,12 @@ public class Gun : MonoBehaviour {
     public void OnTriggerHold()
     {
         Shoot();
-        triggerReleasedSinceLastShot = false;
+        _triggerReleasedSinceLastShot = false;
     }
 
     public void OnTriggerRelease()
     {
-        triggerReleasedSinceLastShot = true;
-        shotRemainingInBurst = burstCount;
+        _triggerReleasedSinceLastShot = true;
+        _shotRemainingInBurst = burstCount;
     }
 }

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
-
+public class Projectile : MonoBehaviour
+{
+    public int needMood;
     public LayerMask collisionMask;
     public float speed = 10f;
     public float damage = 1;

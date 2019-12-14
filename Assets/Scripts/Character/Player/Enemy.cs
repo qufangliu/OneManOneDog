@@ -1,34 +1,39 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Enemy : LivingEntity{
+public class Enemy : LivingEntity
+{
+    public enum State
+    {
+        Idle,
+        Chasing,
+        Attacking
+    }
 
-    public enum State {Idle,Chasing,Attacking};
-    State currentState;
+    private float attackDistanceThreshold = .5f;
+    private State currentState;
+    public float damage = 1;
 
     public ParticleSystem deathEffect;
-    public static event System.Action OnDeathStatic;
+    public Gold gold;
+    public int goldNumber;
 
-    NavMeshAgent pathfinder;
-    Transform target;
-    Material skinMaterial;
-    LivingEntity targetEntity;
+    private bool hasTarget;
+    public int moodDamageMax = 1;
+    public int moodDamageMin = 1;
 
-    Color originalColour;
+    private float nextAttackTime;
 
-    float attackDistanceThreshold = .5f;
-    float timeBetweenAttacks = 1;
-    float damage = 1;
-
-    float nextAttackTime;
-    float myCollisionRadius;
-    float targetCollisionRadius;
-
-    bool hasTarget;
+    private NavMeshAgent pathfinder;
+    private Material skinMaterial;
+    private Transform target;
+    private LivingEntity targetEntity;
+    private float timeBetweenAttacks = 1;
+    public static event Action OnDeathStatic;
 
     private void Awake()
     {
@@ -39,13 +44,12 @@ public class Enemy : LivingEntity{
             hasTarget = true;
             target = GameObject.FindGameObjectWithTag("Player").transform;
             targetEntity = target.GetComponent<LivingEntity>();
-            myCollisionRadius = GetComponent<SphereCollider>().radius;
-            targetCollisionRadius = target.GetComponent<BoxCollider>().size.x;
         }
     }
 
     // Use this for initialization
-    protected override void Start () {
+    protected override void Start()
+    {
         //给emeny自身属性赋值
         base.Start();
 
@@ -57,22 +61,17 @@ public class Enemy : LivingEntity{
 
             StartCoroutine(UndatePath());
         }
-
     }
-    
-    public void SetCharacteristics(float moveSpeed, int enemyDamage,float enemyHealth,Color skinColour)
+
+    public void SetCharacteristics(float moveSpeed, int enemyDamage, float enemyHealth, Color skinColour)
     {
         pathfinder.speed = moveSpeed;
-        if (hasTarget)
-        {
-            damage = enemyDamage;//向上取整
-        }
+        if (hasTarget) damage = enemyDamage; //向上取整
         startingHealth = enemyHealth;
 
         var main = deathEffect.main;
         skinMaterial = GetComponent<MeshRenderer>().material;
         skinMaterial.color = skinColour;
-        originalColour = skinMaterial.color;
     }
 
     public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection)
@@ -80,38 +79,36 @@ public class Enemy : LivingEntity{
         // AudioManager.instance.PlaySound("Impact",transform.position);
         if (damage >= health && !dead)
         {
-            if(OnDeathStatic != null)
-            {
+            if (OnDeathStatic != null)
                 OnDeathStatic();
-            }
-            // AudioManager.instance.PlaySound("Enemy Death",transform.position); 
-            // Destroy(Instantiate(deathEffect.gameObject,hitPoint,Quaternion.FromToRotation(Vector3.forward, hitDirection))as GameObject,deathEffect.main.startLifetime.constant);
+            Instantiate(gold, transform.position,Quaternion.Euler(new Vector3(90,0,0)));
         }
+            
+        // AudioManager.instance.PlaySound("Enemy Death",transform.position); 
+        // Destroy(Instantiate(deathEffect.gameObject,hitPoint,Quaternion.FromToRotation(Vector3.forward, hitDirection))as GameObject,deathEffect.main.startLifetime.constant);
         base.TakeHit(damage, hitPoint, hitDirection);
     }
 
-    void OnTargetDeath()
+    private void OnTargetDeath()
     {
         hasTarget = false;
         currentState = State.Idle;
     }
 
-    IEnumerator UndatePath()
+    private IEnumerator UndatePath()
     {
-        float refreshRate = .2f;
+        var refreshRate = .2f;
 
         while (hasTarget)
         {
             if (currentState == State.Chasing)
             {
-                Vector3 dirToTarget = (target.position - transform.position).normalized;
-                Vector3 targetPosition = target.position;
-                if (!dead&&GetComponent<NavMeshAgent>().isActiveAndEnabled)
-                {
-                    if (pathfinder.enabled == true)
+                var targetPosition = target.position;
+                if (!dead && GetComponent<NavMeshAgent>().isActiveAndEnabled)
+                    if (pathfinder.enabled)
                         pathfinder.SetDestination(targetPosition);
-                }
             }
+
             yield return new WaitForSeconds(refreshRate);
         }
     }
@@ -121,6 +118,7 @@ public class Enemy : LivingEntity{
         if (other.collider.CompareTag("Player"))
         {
             targetEntity.TakeDamage(damage);
+            ContextHelper.playerMood -= Random.Range(moodDamageMin, moodDamageMax);
             Destroy(gameObject);
         }
     }

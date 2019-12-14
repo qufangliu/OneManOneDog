@@ -16,7 +16,7 @@ public class Shell : MonoBehaviour {
         float force = Random.Range(forceMin,forceMax);
         myRightbody.AddForce(transform.right*force);
         myRightbody.AddTorque(Random.insideUnitSphere * force);
-        StartCoroutine("Fade");
+        StartCoroutine(nameof(Fade));
 	}
 	
     IEnumerator Fade()

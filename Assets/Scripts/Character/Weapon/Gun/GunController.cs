@@ -1,24 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GunController : MonoBehaviour {
-    public Transform WeaponHold;
+    [FormerlySerializedAs("WeaponHold")] public Transform weaponHold;
     public Gun[] allGun;
-    Gun equippedGun;
-
-    private void Start()
-    {
-    }
-
+    Gun _equippedGun;
+    
     public void EquidGun(Gun gunToEquip)
     {
-        if (equippedGun != null)
+        if (_equippedGun != null)
         {
-            Destroy(equippedGun.gameObject);
+            Destroy(_equippedGun.gameObject);
         }
-        equippedGun = Instantiate(gunToEquip,WeaponHold.position,WeaponHold.rotation)as Gun;
-        equippedGun.transform.parent = WeaponHold;
+        _equippedGun = Instantiate(gunToEquip,weaponHold.position,weaponHold.rotation)as Gun;
+        _equippedGun.transform.parent = weaponHold;
     }
 
     public void EquipGun(int weaponIndex)
@@ -28,17 +25,17 @@ public class GunController : MonoBehaviour {
 
     public void OnTriggerHold()
     {
-        if (equippedGun != null)
+        if (_equippedGun != null)
         {
-            equippedGun.OnTriggerHold();
+            _equippedGun.OnTriggerHold();
         }
     }
 
     public void OnTriggerRelease()
     {
-        if (equippedGun != null)
+        if (_equippedGun != null)
         {
-            equippedGun.OnTriggerRelease();
+            _equippedGun.OnTriggerRelease();
         }
     }
 
@@ -46,23 +43,23 @@ public class GunController : MonoBehaviour {
     {
         get
         {
-            return WeaponHold.position.y;
+            return weaponHold.position.y;
         }
     }
 
     public void Aim(Vector3 aimPoint)
     {
-        if (equippedGun != null)
+        if (_equippedGun != null)
         {
-            equippedGun.Aim(aimPoint);
+            _equippedGun.Aim(aimPoint);
         }
     }
 
     public void Reload()
     {
-        if (equippedGun != null)
+        if (_equippedGun != null)
         {
-            equippedGun.Reload();
+            _equippedGun.Reload();
         }
     }
 }

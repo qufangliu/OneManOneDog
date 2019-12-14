@@ -79,6 +79,10 @@ public class Player : LivingEntity {
         {
             TakeDamage(health);
         }
+        if (ContextHelper.playerMood <= 0)
+        {
+            Die();
+        }
 	}
     public override void Die()
     {

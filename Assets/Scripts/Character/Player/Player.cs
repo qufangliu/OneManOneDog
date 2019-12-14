@@ -91,13 +91,18 @@ public class Player : LivingEntity {
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            gunContorller.EquipGun(1);
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            gunContorller.EquipGun(2);
+            if (gunContorller.allGun.Length>gunIndex)
+            {
+                gunContorller.EquipGun(gunIndex++);
+            }
+            else
+            {
+                gunIndex = 0;
+            }
         }
 	}
+
+    private int gunIndex = 0;
     public override void Die()
     {
         

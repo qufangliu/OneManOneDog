@@ -8,7 +8,8 @@ namespace ui.Main
 	{
 		public static void BindAll()
 		{
-
+			UIObjectFactory.SetPackageItemExtension(UI_tip.URL, typeof(UI_tip));
+			UIObjectFactory.SetPackageItemExtension(UI_start.URL, typeof(UI_start));
 		}
 	}
 }

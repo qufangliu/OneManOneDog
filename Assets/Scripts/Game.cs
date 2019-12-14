@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using ui.Main;
+using UnityEngine;
+using View;
 
 /**
  * 游戏启动脚本
@@ -9,11 +11,7 @@ public class Game : MonoBehaviour
     void Start()
     {
         Debug.Log( "游戏开始!" );
-        InitUI();
-    }
-
-    private void InitUI()
-    {
-        
+        UIHelper.InitUI();
+        UIHelper.OpenView<StartView>( typeof(UI_start) );
     }
 }

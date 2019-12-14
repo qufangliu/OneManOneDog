@@ -1,6 +1,8 @@
+using System;
 using UI;
 using ui.Main;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace View
 {
@@ -10,6 +12,17 @@ namespace View
 
         private float totalTime;
         private bool closeEnable;
+
+        private Action<int> _action;
+        
+        private void Start()
+        {
+        }
+
+        private void FindPlayer(AsyncOperation obj)
+        {
+            
+        }
 
         public override void OnOpen( object data )
         {
@@ -25,14 +38,16 @@ namespace View
 
         public void Update()
         {
-            totalTime += Time.deltaTime;
-            if( totalTime > 3 )
-            {
-                closeEnable = true;
-                // 场景结算(0:战斗 1:探险)
-                UIHelper.OpenView<ResultView>( typeof(UI_result), ContextHelper.walk ? 1 :0 );
-                Close();
-            }
+            ui.health_bar.value = ContextHelper.playerMood;
+            ui.dog_health_bar.value = ContextHelper.dogMood;
+            // totalTime += Time.deltaTime;
+            // if( totalTime > 3 )
+            // {
+            //     closeEnable = true;
+            //     // 场景结算(0:战斗 1:探险)
+            //     UIHelper.OpenView<ResultView>( typeof(UI_result), ContextHelper.walk ? 1 :0 );
+            //     Close();
+            // }
         }
     }
 }

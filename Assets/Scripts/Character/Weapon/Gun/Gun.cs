@@ -94,7 +94,7 @@ public class Gun : MonoBehaviour {
                 _projectilesRemainingInMag--;
                 
                 _nextShotTime = Time.time + msBetweenShots / 1000;
-                Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
+                Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation);
                 newProjectile.setSpeed(muzzleVelocity);
                 ContextHelper.playerMood -= newProjectile.needMood;
             }
@@ -147,7 +147,7 @@ public class Gun : MonoBehaviour {
     {
         if (!_isReloading)
         {
-            transform.LookAt(aimPoint);
+            transform.LookAt(aimPoint,Vector3.back);
         }
     }
 

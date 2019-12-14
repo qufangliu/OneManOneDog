@@ -7,6 +7,14 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : LivingEntity
 {
+    public enum EnemyType 
+    {
+        Null,
+        Index,
+        loop,
+        none
+    }
+    
     public enum State
     {
         Idle,
@@ -18,6 +26,7 @@ public class Enemy : LivingEntity
     private State currentState;
     public float damage = 1;
 
+    public EnemyType type;
     public ParticleSystem deathEffect;
     public Gold gold;
     public int goldNumber;
@@ -117,8 +126,16 @@ public class Enemy : LivingEntity
     {
         if (other.collider.CompareTag("Player"))
         {
-            targetEntity.TakeDamage(damage);
+            // targetEntity.TakeDamage(damage);
             ContextHelper.playerMood -= Random.Range(moodDamageMin, moodDamageMax);
+            if (type == EnemyType.loop)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    var spawnEnemy = Instantiate(this,transform.position, Quaternion.identity,transform);
+                    spawnEnemy.type = EnemyType.none;
+                }
+            }
             Destroy(gameObject);
         }
     }

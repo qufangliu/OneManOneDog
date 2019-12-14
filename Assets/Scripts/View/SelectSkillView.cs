@@ -19,7 +19,6 @@ namespace View
             ui.start_btn.onClick.Set( () =>
             {
                 Debug.Log( $"进入游戏" );
-                SceneManager.LoadSceneAsync("Fight");
                 UIHelper.OpenView<BattleView>( typeof(UI_hud) );
                 Close();
             } );

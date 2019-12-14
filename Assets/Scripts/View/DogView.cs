@@ -30,7 +30,7 @@ namespace View
             {
                 Debug.Log( $"去溜狗" );
                 ui.act_3_btn.enabled = false;
-                UIHelper.OpenView<BattleView>( typeof(UI_hud) );
+                // UIHelper.OpenView<BattleView>( typeof(UI_hud) );
                 Close();
             } );
         }

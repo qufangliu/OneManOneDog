@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ui.Main;
 using UnityEngine;
+using View;
 
 [RequireComponent(typeof (PlayerController))]
 [RequireComponent(typeof(GunController))]
@@ -9,7 +11,7 @@ public class Player : LivingEntity {
     public float movespeed = 5f;
     PlayerController controller;
     GunController gunContorller;
-
+    
     public Crosshairs crosshairs;
 
     Ray ray;
@@ -23,6 +25,9 @@ public class Player : LivingEntity {
         spriteRenderer = GetComponent<SpriteRenderer>();
         viewCamera = Camera.main;
         FindObjectOfType<Spawner>().OnNewWave += OnNewWave;
+        
+        UIHelper.InitUI();
+        UIHelper.OpenView<BattleView>(typeof(UI_hud));
     }
 
     // Use this for initialization
@@ -83,10 +88,21 @@ public class Player : LivingEntity {
         {
             Die();
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            gunContorller.EquipGun(1);
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            gunContorller.EquipGun(2);
+        }
 	}
     public override void Die()
     {
+        
         // AudioManager.instance.PlaySound("Player Death", transform.position);
         base.Die();
     }
+    
 }

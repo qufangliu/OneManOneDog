@@ -1,6 +1,7 @@
 using UI;
 using ui.Main;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace View
 {
@@ -12,6 +13,7 @@ namespace View
             ui.start_btn.onClick.Set( () =>
             {
                 UIHelper.OpenView<TipView>( typeof(UI_tip), "第一天..." );
+                SceneManager.LoadSceneAsync("Fight");
             } );
         }
     }

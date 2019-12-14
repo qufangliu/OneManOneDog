@@ -1,0 +1,14 @@
+{
+    "name": "FairyGUI",
+    "references": [
+        "GUID:a85637e0b94b14ee0a764ee5c2d32598"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

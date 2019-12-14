@@ -11,8 +11,8 @@ namespace ui.Main
 		public UI_hud_tip hud_tip;
 		public GProgressBar health_bar;
 		public GLoader man_loader;
-		public GLoader dog_loader;
 		public GProgressBar dog_health_bar;
+		public GLoader dog_loader;
 
 		public const string URL = "ui://e4ybow8yjk0in";
 
@@ -33,8 +33,8 @@ namespace ui.Main
 			hud_tip = (UI_hud_tip)this.GetChildAt(0);
 			health_bar = (GProgressBar)this.GetChildAt(1);
 			man_loader = (GLoader)this.GetChildAt(2);
-			dog_loader = (GLoader)this.GetChildAt(3);
-			dog_health_bar = (GProgressBar)this.GetChildAt(4);
+			dog_health_bar = (GProgressBar)this.GetChildAt(3);
+			dog_loader = (GLoader)this.GetChildAt(4);
 		}
 	}
 }

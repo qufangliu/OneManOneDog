@@ -14,6 +14,7 @@ namespace View
             {
                 UIHelper.OpenView<TipView>( typeof(UI_tip), "第一天..." );
                 SceneManager.LoadSceneAsync("Fight");
+                Close();
             } );
         }
     }

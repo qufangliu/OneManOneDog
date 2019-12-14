@@ -8,6 +8,7 @@ namespace ui.Main
 	public partial class UI_store : GComponent
 	{
 		public GComponent goods_list;
+		public GButton jump_btn;
 
 		public const string URL = "ui://e4ybow8yjk0it";
 
@@ -25,6 +26,7 @@ namespace ui.Main
 			base.ConstructFromXML(xml);
 
 			goods_list = (GComponent)this.GetChildAt(1);
+			jump_btn = (GButton)this.GetChildAt(2);
 		}
 	}
 }

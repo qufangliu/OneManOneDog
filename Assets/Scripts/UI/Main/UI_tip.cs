@@ -7,6 +7,7 @@ namespace ui.Main
 {
 	public partial class UI_tip : GComponent
 	{
+		public Controller content;
 		public GGraph bg;
 		public GTextField content_txt;
 
@@ -25,6 +26,7 @@ namespace ui.Main
 		{
 			base.ConstructFromXML(xml);
 
+			content = this.GetControllerAt(0);
 			bg = (GGraph)this.GetChildAt(0);
 			content_txt = (GTextField)this.GetChildAt(1);
 		}

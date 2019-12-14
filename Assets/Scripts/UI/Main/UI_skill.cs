@@ -9,6 +9,7 @@ namespace ui.Main
 	{
 		public GList skill_list;
 		public GList accompany_skill_list;
+		public GButton start_btn;
 
 		public const string URL = "ui://e4ybow8yjk0ik";
 
@@ -25,8 +26,9 @@ namespace ui.Main
 		{
 			base.ConstructFromXML(xml);
 
-			skill_list = (GList)this.GetChildAt(4);
+			skill_list = (GList)this.GetChildAt(2);
 			accompany_skill_list = (GList)this.GetChildAt(5);
+			start_btn = (GButton)this.GetChildAt(6);
 		}
 	}
 }

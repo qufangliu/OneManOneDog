@@ -12,7 +12,6 @@ namespace ui.Main
 			UIObjectFactory.SetPackageItemExtension(UI_role_bar.URL, typeof(UI_role_bar));
 			UIObjectFactory.SetPackageItemExtension(UI_name.URL, typeof(UI_name));
 			UIObjectFactory.SetPackageItemExtension(UI_skill.URL, typeof(UI_skill));
-			UIObjectFactory.SetPackageItemExtension(UI_skill_item.URL, typeof(UI_skill_item));
 			UIObjectFactory.SetPackageItemExtension(UI_hud.URL, typeof(UI_hud));
 			UIObjectFactory.SetPackageItemExtension(UI_hud_tip.URL, typeof(UI_hud_tip));
 			UIObjectFactory.SetPackageItemExtension(UI_result.URL, typeof(UI_result));

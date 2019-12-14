@@ -1,6 +1,7 @@
 using UI;
 using ui.Main;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace View
 {
@@ -30,7 +31,11 @@ namespace View
             {
                 if( closeEnable )
                 {
-                    UIHelper.OpenView<SelectSkillView>( typeof(UI_skill) );
+                    // UIHelper.OpenView<SelectSkillView>( typeof(UI_skill) );
+                    // 设置为非遛狗状态
+                    ContextHelper.walk = false;
+                    SceneManager.LoadSceneAsync("Fight");
+                    UIHelper.OpenView<BattleView>( typeof(UI_hud) );
                     Close();
                 }
             } );
